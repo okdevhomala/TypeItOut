@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes">
+    <title>Type It Out! - Test Your Typing Speed</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+    <style>
+        #start-screen,
+        #game-screen,
+        #end-screen {
+            display: none;
+        }
+
+        #start-screen {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--bgColor);
+            border: 2px solid var(--primaryColor);
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        #start-screen h1 {
+            color: var(--primaryColor);
+            margin-bottom: 20px;
+        }
+
+        #start-screen p {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: var(--textPrimary);
+        }
+
+        #start-btn {
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: var(--primaryColor);
+            color: var(--bgColor);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #start-btn:hover {
+            background-color: var(--textPrimary);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bgColor);
+            border-bottom: 2px solid var(--primaryColor);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--textPrimary);
+            cursor: pointer;
+        }
+
+        #nav-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        #nav-time-selector,
+        #theme-selector {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        #nav-time-selector label,
+        #theme-selector label {
+            margin-right: 0.5rem;
+            color: var(--primaryColor);
+        }
+
+        #nav-time-selector select,
+        #theme-selector select {
+            padding: 0.25rem;
+            background-color: var(--bgColor);
+            color: var(--textPrimary);
+            border: 1px solid var(--primaryColor);
+            border-radius: 3px;
+        }
+
+        #theme-selector {
+            margin: 0;
+        }
+
+        #start-screen {
+            max-width: 400px;
+            width: 90%;
+        }
+
+        #time-selector {
+            margin-top: 20px;
+        }
+
+        #time-selector label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--primaryColor);
+        }
+
+        #time-selector select {
+            width: 100%;
+            padding: 5px;
+            font-size: 1rem;
+            background-color: var(--bgColor);
+            color: var(--textPrimary);
+            border: 1px solid var(--primaryColor);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-container">
+        <div class="content-container">
+            <nav>
+                <div class="logo" id="logo">Type It Out!</div>
+                <div id="nav-controls">
+                    <div id="nav-time-selector">
+                        <label for="nav-test-duration">Time:</label>
+                        <select id="nav-test-duration">
+                            <option value="15">15s</option>
+                            <option value="30" selected>30s</option>
+                            <option value="60">60s</option>
+                            <option value="120">120s</option>
+                        </select>
+                    </div>
+                    <div id="theme-toggle">
+                        <label for="theme-switch">Theme:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="theme-switch">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </nav>
+
+            <main>
+                <div id="start-screen">
+                    <h1>Welcome to <br>Type It Out!</h1>
+                    <p>Test your typing speed and accuracy!</p>
+                    <div id="time-selector">
+                        <label for="test-duration">Select test duration:</label>
+                        <select id="test-duration">
+                            <option value="15">15 seconds</option>
+                            <option value="30" selected>30 seconds</option>
+                            <option value="60">60 seconds</option>
+                            <option value="120">120 seconds</option>
+                        </select>
+                    </div>
+                    <button id="start-btn">Start Typing Test</button>
+                    <button id="view-highscores">View Highscores</button>
+
+                </div>
+
+                <div id="game-screen">
+                    <div id="header">
+                        <div id="info"></div>
+                        <div id="buttons">
+                            <button id="newGameBtn">New game</button>
+                        </div>
+                    </div>
+                    <div id="game" tabindex="0">
+                        <div id="words"></div>
+                        <div id="cursor"></div>
+                        <div id="focus-error">Click here to focus</div>
+                    </div>
+                </div>
+
+                <div id="end-screen">
+                    <h2>Game Over</h2>
+                    <p>Words Per Minute: <span id="final-wpm"></span></p>
+                    <p>Accuracy: <span id="final-accuracy"></span>%</p>
+                    <p>Total Mistakes: <span id="total-mistakes"></span></p>
+                    <div id="save-score-container">
+                        <p>Congratulations! You've achieved a high score.</p>
+                        <input type="text" id="highscore-name" placeholder="Enter your name">
+                        <button id="save-score">Save Score</button>
+                    </div>
+                    <button id="restart-btn">Play Again</button>
+                    <button class="view-highscores-btn">View Highscores</button>
+
+                </div>
+
+                <div id="highscores-screen">
+                    <div id="highscores"></div>
+                    <button id="back-to-game">Back to Game</button>
+                </div>
+            </main>
+
+            <footer>
+                <p><i>Made by </i><b>Aayush, Binayak & Khusboo</b></p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="typing.js"></script>
+
+</body>
+
+</html>
